@@ -1,0 +1,98 @@
+<Page
+    x:Class="SivarOs.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{StaticResource BrandBackgroundBrush}">
+
+    <Grid>
+        <StackPanel
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Width="340"
+            Spacing="16">
+
+            <!-- Logo / Brand -->
+            <StackPanel HorizontalAlignment="Center" Spacing="8">
+                <Ellipse Width="72" Height="72" Fill="{StaticResource BrandPrimaryBrush}">
+                    <!-- replace with actual logo -->
+                </Ellipse>
+                <TextBlock
+                    Text="Sivar.Os"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="{StaticResource BrandTextBrush}"
+                    HorizontalAlignment="Center"/>
+                <TextBlock
+                    Text="Connect with your community"
+                    FontSize="13"
+                    Foreground="{StaticResource BrandSubtextBrush}"
+                    HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Homeserver -->
+            <StackPanel Spacing="4">
+                <TextBlock Text="Homeserver" Foreground="{StaticResource BrandSubtextBrush}" FontSize="12"/>
+                <TextBox
+                    x:Name="TxtHomeServer"
+                    Text="http://158.220.114.205:8008"
+                    PlaceholderText="https://matrix.example.com"
+                    Background="{StaticResource BrandSurfaceBrush}"
+                    Foreground="{StaticResource BrandTextBrush}"
+                    CornerRadius="8"
+                    Padding="12,10"/>
+            </StackPanel>
+
+            <!-- Username -->
+            <StackPanel Spacing="4">
+                <TextBlock Text="Username" Foreground="{StaticResource BrandSubtextBrush}" FontSize="12"/>
+                <TextBox
+                    x:Name="TxtUsername"
+                    PlaceholderText="@username:server"
+                    Background="{StaticResource BrandSurfaceBrush}"
+                    Foreground="{StaticResource BrandTextBrush}"
+                    CornerRadius="8"
+                    Padding="12,10"/>
+            </StackPanel>
+
+            <!-- Password -->
+            <StackPanel Spacing="4">
+                <TextBlock Text="Password" Foreground="{StaticResource BrandSubtextBrush}" FontSize="12"/>
+                <PasswordBox
+                    x:Name="TxtPassword"
+                    PlaceholderText="Password"
+                    Background="{StaticResource BrandSurfaceBrush}"
+                    Foreground="{StaticResource BrandTextBrush}"
+                    CornerRadius="8"
+                    Padding="12,10"/>
+            </StackPanel>
+
+            <!-- Error -->
+            <TextBlock
+                x:Name="TxtError"
+                Foreground="Red"
+                FontSize="12"
+                TextWrapping="Wrap"
+                Visibility="Collapsed"/>
+
+            <!-- Login Button -->
+            <Button
+                x:Name="BtnLogin"
+                Content="Sign In"
+                HorizontalAlignment="Stretch"
+                Background="{StaticResource BrandPrimaryBrush}"
+                Foreground="White"
+                CornerRadius="8"
+                Padding="0,12"
+                FontWeight="SemiBold"
+                FontSize="15"
+                Click="BtnLogin_Click"/>
+
+            <!-- Loading -->
+            <ProgressRing
+                x:Name="LoadingRing"
+                IsActive="False"
+                HorizontalAlignment="Center"
+                Foreground="{StaticResource BrandPrimaryBrush}"/>
+        </StackPanel>
+    </Grid>
+</Page>

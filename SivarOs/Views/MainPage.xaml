@@ -1,0 +1,262 @@
+<Page
+    x:Class="SivarOs.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:SivarOs.Models"
+    Background="{StaticResource BrandBackgroundBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!-- Sidebar -->
+            <ColumnDefinition Width="300" MinWidth="250" MaxWidth="360"/>
+            <!-- Chat -->
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+        <Grid Grid.Column="0" Background="{StaticResource BrandSurfaceBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0" Padding="16,14" Background="{StaticResource BrandCardBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock
+                        Text="Sivar.Os"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Foreground="{StaticResource BrandTextBrush}"/>
+                    <TextBlock
+                        x:Name="TxtUserId"
+                        FontSize="11"
+                        Foreground="{StaticResource BrandSubtextBrush}"/>
+                </StackPanel>
+                <Button
+                    Grid.Column="1"
+                    Content="＋"
+                    FontSize="18"
+                    Background="Transparent"
+                    Foreground="{StaticResource BrandTextBrush}"
+                    ToolTipService.ToolTip="New Room"
+                    Click="BtnNewRoom_Click"/>
+            </Grid>
+
+            <!-- Room List -->
+            <ListView
+                x:Name="RoomList"
+                Grid.Row="1"
+                Background="Transparent"
+                SelectionChanged="RoomList_SelectionChanged">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:MatrixRoom">
+                        <Grid Padding="14,10" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Avatar -->
+                            <Ellipse Width="44" Height="44" Fill="{StaticResource BrandPrimaryBrush}">
+                            </Ellipse>
+                            <TextBlock
+                                Grid.Column="0"
+                                Text="{x:Bind Name}"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Width="44"
+                                TextAlignment="Center"/>
+
+                            <!-- Room info -->
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                                <TextBlock
+                                    Text="{x:Bind Name}"
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Foreground="{StaticResource BrandTextBrush}"
+                                    TextTrimming="CharacterEllipsis"/>
+                                <TextBlock
+                                    Text="{x:Bind LastMessage}"
+                                    FontSize="12"
+                                    Foreground="{StaticResource BrandSubtextBrush}"
+                                    TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+
+                            <!-- Unread badge -->
+                            <Border
+                                Grid.Column="2"
+                                Background="{StaticResource BrandPrimaryBrush}"
+                                CornerRadius="10"
+                                MinWidth="20"
+                                Height="20"
+                                Padding="4,0"
+                                Visibility="{x:Bind UnreadCount, Converter={StaticResource IntToVisibilityConverter}}"
+                                VerticalAlignment="Top">
+                                <TextBlock
+                                    Text="{x:Bind UnreadCount}"
+                                    FontSize="11"
+                                    Foreground="White"
+                                    HorizontalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <!-- ── CHAT VIEW ───────────────────────────────────────────── -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Chat Header -->
+            <Grid
+                Grid.Row="0"
+                Padding="20,14"
+                Background="{StaticResource BrandCardBrush}">
+                <StackPanel>
+                    <TextBlock
+                        x:Name="TxtRoomName"
+                        Text="Select a room"
+                        FontSize="17"
+                        FontWeight="SemiBold"
+                        Foreground="{StaticResource BrandTextBrush}"/>
+                    <TextBlock
+                        x:Name="TxtRoomTopic"
+                        FontSize="12"
+                        Foreground="{StaticResource BrandSubtextBrush}"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Messages -->
+            <ScrollViewer
+                x:Name="MessagesScroll"
+                Grid.Row="1"
+                Padding="16,8">
+                <ItemsControl x:Name="MessageList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:MatrixMessage">
+                            <Grid Margin="0,4">
+                                <!-- Own message (right-aligned) -->
+                                <Border
+                                    HorizontalAlignment="Right"
+                                    MaxWidth="420"
+                                    Background="{StaticResource BubbleOwnBrush}"
+                                    CornerRadius="16,4,16,16"
+                                    Padding="12,8"
+                                    Visibility="{x:Bind IsOwn, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel Spacing="2">
+                                        <TextBlock
+                                            Text="{x:Bind Body}"
+                                            Foreground="White"
+                                            TextWrapping="Wrap"
+                                            FontSize="14"/>
+                                        <TextBlock
+                                            Text="{x:Bind SentAt}"
+                                            Foreground="#AAFFFFFF"
+                                            FontSize="10"
+                                            HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Other message (left-aligned) -->
+                                <StackPanel
+                                    HorizontalAlignment="Left"
+                                    MaxWidth="420"
+                                    Orientation="Horizontal"
+                                    Spacing="8">
+                                    <!-- Avatar placeholder -->
+                                    <Ellipse
+                                        Width="32" Height="32"
+                                        Fill="{StaticResource BrandCardBrush}"
+                                        VerticalAlignment="Bottom"/>
+                                    <Border
+                                        Background="{StaticResource BubbleOtherBrush}"
+                                        CornerRadius="4,16,16,16"
+                                        Padding="12,8">
+                                        <StackPanel Spacing="2">
+                                            <TextBlock
+                                                Text="{x:Bind SenderName}"
+                                                Foreground="{StaticResource BrandPrimaryBrush}"
+                                                FontSize="11"
+                                                FontWeight="SemiBold"/>
+                                            <TextBlock
+                                                Text="{x:Bind Body}"
+                                                Foreground="{StaticResource BrandTextBrush}"
+                                                TextWrapping="Wrap"
+                                                FontSize="14"/>
+                                            <TextBlock
+                                                Text="{x:Bind SentAt}"
+                                                Foreground="{StaticResource BrandSubtextBrush}"
+                                                FontSize="10"
+                                                HorizontalAlignment="Right"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Loading -->
+            <ProgressRing
+                x:Name="ChatLoading"
+                Grid.Row="1"
+                IsActive="False"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="{StaticResource BrandPrimaryBrush}"/>
+
+            <!-- Input Bar -->
+            <Grid
+                Grid.Row="2"
+                Padding="16,10"
+                Background="{StaticResource BrandSurfaceBrush}"
+                ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    x:Name="TxtMessage"
+                    PlaceholderText="Write a message…"
+                    Background="{StaticResource BrandCardBrush}"
+                    Foreground="{StaticResource BrandTextBrush}"
+                    CornerRadius="24"
+                    Padding="16,10"
+                    MaxHeight="120"
+                    AcceptsReturn="False"
+                    KeyDown="TxtMessage_KeyDown"/>
+                <Button
+                    Grid.Column="1"
+                    Content="➤"
+                    FontSize="18"
+                    Width="44"
+                    Height="44"
+                    CornerRadius="22"
+                    Background="{StaticResource BrandPrimaryBrush}"
+                    Foreground="White"
+                    Click="BtnSend_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

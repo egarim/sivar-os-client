@@ -1,0 +1,22 @@
+<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-browserwasm</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SivarOs</RootNamespace>
+    <AssemblyName>SivarOs</AssemblyName>
+    <ApplicationTitle>Sivar.Os</ApplicationTitle>
+    <ApplicationId>com.sivaros.chat</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UnoSingleProject>true</UnoSingleProject>
+    <DefaultLanguage>en</DefaultLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Uno.WinUI" />
+    <PackageReference Include="Uno.WinUI.WebAssembly" Condition="'$(TargetFramework)'=='net9.0-browserwasm'" />
+    <PackageReference Include="System.Net.Http.Json" />
+  </ItemGroup>
+</Project>
