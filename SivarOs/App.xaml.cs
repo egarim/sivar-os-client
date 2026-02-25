@@ -9,6 +9,11 @@ public partial class App : Application
 
     public App() => InitializeComponent();
 
+    public static void InitializeLogging()
+    {
+        // Configure logging here if needed (e.g., Serilog, Microsoft.Extensions.Logging)
+    }
+
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         _window = new Window();
