@@ -12,6 +12,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UnoSingleProject>true</UnoSingleProject>
     <DefaultLanguage>en</DefaultLanguage>
+
+    <!--
+      UnoFeatures are used to quickly add and manage features enabled for your app.
+      SkiaRenderer is required for Android and iOS rendering.
+      https://aka.platform.uno/singleproject-features
+    -->
+    <UnoFeatures>
+      SkiaRenderer;
+    </UnoFeatures>
   </PropertyGroup>
 
   <ItemGroup>
